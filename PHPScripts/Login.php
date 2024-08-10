@@ -64,6 +64,11 @@
     <?php
     session_start();
     // check if credentials are valid
+    /*
+    Note: There is no SQL database for this project,
+    $valid_username and $valid_password is a place where you can modify username and password manually
+    feel free to modify these values :)!
+    */
     $msg = '';
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid_username = 'bashar';

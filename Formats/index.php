@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     );
 $taskRow = implode('|', $Task);
 file_put_contents( __DIR__ . "/TaskTables.txt", "\n" . $taskRow , FILE_APPEND);
-// echo "POST IS CAme";
 }
 ?>
 <!DOCTYPE html>
@@ -28,10 +27,19 @@ file_put_contents( __DIR__ . "/TaskTables.txt", "\n" . $taskRow , FILE_APPEND);
     <title>Tasks Table</title>
     <script>
     function confirmDelete(index) {
-        if (confirm("Are you sure you want to delete this task?")) {
-            window.location.href = "http://localhost/ToDoListProject/PHPScripts/DeleteTask.php?line=" + index;
+            var modal = document.getElementById("deleteModal");
+            modal.style.display = "block";
+
+            var confirmBtn = document.getElementById("confirmDeleteBtn");
+            confirmBtn.onclick = function() {
+                window.location.href = "http://localhost/ToDoListProject/PHPScripts/DeleteTask.php?line=" + index;
+            }
+
+            var cancelBtn = document.getElementById("cancelDeleteBtn");
+            cancelBtn.onclick = function() {
+                modal.style.display = "none";
+            }
         }
-    }
     </script>
     <style>
         body {
@@ -83,6 +91,54 @@ file_put_contents( __DIR__ . "/TaskTables.txt", "\n" . $taskRow , FILE_APPEND);
         a.button:hover {
             background-color: #0056b3;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 5px;
+        }
+
+        .modal-content p {
+            margin: 0;
+        }
+
+        .modal-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .modal-buttons button {
+            padding: 8px 16px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-buttons button.primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-buttons button.secondary {
+            background-color: #dc3545;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -130,6 +186,15 @@ file_put_contents( __DIR__ . "/TaskTables.txt", "\n" . $taskRow , FILE_APPEND);
             ?>
         </tbody>
     </Table>
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this task?</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteBtn" class="primary">Confirm</button>
+                <button id="cancelDeleteBtn" class="secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
 <button type = "button" onclick = "document.location.href = 'http://localhost/ToDoListProject/PHPScripts/AddTask.php'">Add Task</button>
 </body>
 </html>
